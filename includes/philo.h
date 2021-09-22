@@ -6,7 +6,7 @@
 /*   By: fhamel <fhamel@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/06 03:04:52 by fhamel            #+#    #+#             */
-/*   Updated: 2021/09/22 13:07:37 by fhamel           ###   ########.fr       */
+/*   Updated: 2021/09/22 16:37:53 by fhamel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,10 @@
 # include <unistd.h>
 # include <stdio.h>
 # include <stdlib.h>
+
+// Bools
+# define FALSE 0
+# define TRUE 1
 
 # define NO_ARG -1
 

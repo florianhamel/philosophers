@@ -6,7 +6,7 @@
 /*   By: fhamel <fhamel@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/22 11:54:43 by fhamel            #+#    #+#             */
-/*   Updated: 2021/09/22 13:13:44 by fhamel           ###   ########.fr       */
+/*   Updated: 2021/09/22 18:00:49 by fhamel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,6 @@ void	*start_philo(void *v_data)
 	t_data	*data;
 
 	data = (t_data *)v_data;
-	printf("%d\n", data->nb_philos);
 	return (NULL);
 }
 

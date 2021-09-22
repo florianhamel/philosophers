@@ -6,7 +6,7 @@
 /*   By: fhamel <fhamel@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/22 11:53:16 by fhamel            #+#    #+#             */
-/*   Updated: 2021/09/22 13:09:39 by fhamel           ###   ########.fr       */
+/*   Updated: 2021/09/22 16:38:17 by fhamel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ int	check_val(char *str)
 
 	i = 0;
 	if (ft_strlen(str) > 5)
-		return (0);
+		return (FALSE);
 	while (str[i])
 	{
 		if (str[i] < '0' || '9' < str[i])
@@ -43,6 +43,6 @@ int	check_val(char *str)
 		i++;
 	}
 	if (10000 < ft_atoi(str))
-		return (0);
-	return (1);
+		return (FALSE);
+	return (TRUE);
 }
