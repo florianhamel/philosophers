@@ -6,7 +6,7 @@
 /*   By: fhamel <fhamel@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/22 11:53:16 by fhamel            #+#    #+#             */
-/*   Updated: 2021/09/22 16:38:17 by fhamel           ###   ########.fr       */
+/*   Updated: 2021/09/24 18:04:42 by fhamel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,4 +45,26 @@ int	check_val(char *str)
 	if (10000 < ft_atoi(str))
 		return (FALSE);
 	return (TRUE);
+}
+
+int	check_parsing(int ac, char **av)
+{
+	int		i;
+
+	i = 1;
+	if (ac < 5 || 6 < ac)
+	{
+		error_args();
+		return (ERROR);
+	}
+	while (av[i])
+	{
+		if (check_val(av[i]) == ERROR)
+		{
+			error_val();
+			return (ERROR);
+		}
+		i++;
+	}
+	return (SUCCESS);
 }
