@@ -6,7 +6,7 @@
 #    By: fhamel <fhamel@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/04/25 20:20:38 by florianhame       #+#    #+#              #
-#    Updated: 2021/09/22 16:33:01 by fhamel           ###   ########.fr        #
+#    Updated: 2021/09/25 20:16:39 by fhamel           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -23,8 +23,10 @@ D_OBJS		=	objs/
 D_SRCS		=	srcs/
 
 _SRC_		=	error.c \
+				init.c \
 				main.c \
 				philo.c \
+				thread.c \
 				utils.c \
 
 SRCS		=	$(addprefix $(D_SRCS), $(_SRC_))
