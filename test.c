@@ -49,19 +49,9 @@ void	*f2(void *arg)
 
 int	main(void)
 {
-	pthread_t	t1;
-	pthread_t	t2;
-	t_elem		*elem_lst;
+	pthread_mutex_t	test;
 
-	pthread_mutex_init(&mutex, NULL);
-	elem_lst = malloc(sizeof(t_elem));
-	elem_lst->status = 0;
-	elem_lst->next = malloc(sizeof(t_elem));
-	elem_lst->next->status = 0;
-	elem_lst->prev = elem_lst->next;
-	pthread_create(&t1, NULL, f1, (void *)elem_lst);
-	pthread_create(&t2, NULL, f1, (void *)elem_lst);
-	pthread_join(t1, NULL);
-	pthread_join(t2, NULL);
+	int ret = pthread_mutex_destroy(&test);
+	printf("%d\n", ret);
 	return (0);
 }

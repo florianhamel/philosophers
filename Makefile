@@ -6,7 +6,7 @@
 #    By: fhamel <fhamel@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/04/25 20:20:38 by florianhame       #+#    #+#              #
-#    Updated: 2021/09/27 20:15:54 by fhamel           ###   ########.fr        #
+#    Updated: 2021/09/27 23:38:31 by fhamel           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -74,7 +74,7 @@ $(D_OBJS)%.o : $(D_SRCS)%.c
 
 $(NAME) : compiling_start_m $(OBJS) compiling_end_m
 	@python -c 'print u"\033[0;33m\u2192 " + "Linking objects for \033[0;34m$(NAME)\033[0;33m... \033[0m"'
-	@$(CC) $(FSANITIZE) $(OBJS) -o $(NAME)
+	@$(CC) $(OBJS) -o $(NAME)
 	@python -c 'print u"\033[0;32mLinking successful \u2713 \033[0m"'
 
 clean :

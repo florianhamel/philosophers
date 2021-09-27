@@ -6,37 +6,32 @@
 /*   By: fhamel <fhamel@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/24 14:19:00 by fhamel            #+#    #+#             */
-/*   Updated: 2021/09/27 20:38:50 by fhamel           ###   ########.fr       */
+/*   Updated: 2021/09/27 22:48:42 by fhamel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-void	*start_philo(void *void_philo)
+void	free_philo_fork(t_philo *philo_lst)
 {
-	t_philo	*philo;
+	t_philo	*current;
+	t_philo	*next;
+	int		i;
 
-	philo = (t_philo *)void_philo;
-	while (TRUE)
+	current = philo_lst;
+	i = 0;
+	while (i < current->data->param.nb_philos)
 	{
-		if (do_eat(philo) == ERROR)
-			return (NULL);
-		if (do_sleep(philo) == ERROR)
-			return (NULL);
-		if (do_think(philo) == ERROR)
-			return (NULL);
+		pthread_mutex_destroy(&current->data->fork[i]);
+		i++;
 	}
-	return (NULL);
-}
-
-void	*start_watch(void *void_lst)
-{
-	t_philo *current;
-
-	current = (t_philo *)void_lst;
-	while (TRUE)
-	{}
-	return (NULL);
+	pthread_mutex_destroy(&current->data->write);
+	while (current)
+	{
+		next = current->next;
+		free(current);
+		current = next;
+	}
 }
 
 t_philo	*create_philos(t_data *data)
@@ -53,7 +48,7 @@ t_philo	*create_philos(t_data *data)
 		philo = init_philo(i + 1, data);
 		if (!philo)
 		{
-			// free shit
+			free_philo_fork(philo_lst);
 			return (NULL);
 		}
 		append_philo(&philo_lst, philo);
@@ -79,7 +74,7 @@ int	create_threads(t_data *data)
 			return (ERROR);
 	if (pthread_join(watch, NULL) == ERROR)
 	{
-		// free shit
+		free_philo_fork(philo_lst);
 		return (ERROR);
 	}
 	return (SUCCESS);

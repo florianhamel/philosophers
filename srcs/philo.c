@@ -6,11 +6,55 @@
 /*   By: fhamel <fhamel@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/22 11:54:43 by fhamel            #+#    #+#             */
-/*   Updated: 2021/09/27 17:15:56 by fhamel           ###   ########.fr       */
+/*   Updated: 2021/09/27 23:40:58 by fhamel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
+
+void	*start_philo(void *void_philo)
+{
+	t_philo	*philo;
+
+	philo = (t_philo *)void_philo;
+	while (TRUE)
+	{
+		if (do_eat(philo) == ERROR)
+			return (NULL);
+		if (do_sleep(philo) == ERROR)
+			return (NULL);
+		if (do_think(philo) == ERROR)
+			return (NULL);
+	}
+	return (NULL);
+}
+
+void	*start_watch(void *void_lst)
+{
+	t_philo			*philo_lst;
+	t_philo 		*current;
+	int				boolean;
+
+	philo_lst = (t_philo *)void_lst;
+	while (TRUE)
+	{
+		current = philo_lst;
+		while (current)
+		{
+			boolean = is_dead(current);
+			if (boolean != FALSE)
+			{
+				if (boolean == TRUE)
+					simulate_action(current, DIE, NO_ARG);
+				free_philo_fork(philo_lst);
+				return (NULL);
+			}
+			current = current->next;
+			usleep(10000);
+		}
+	}
+	return (NULL);
+}
 
 int	simulation(t_data *data)
 {

@@ -6,7 +6,7 @@
 /*   By: fhamel <fhamel@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/06 03:04:52 by fhamel            #+#    #+#             */
-/*   Updated: 2021/09/27 20:24:20 by fhamel           ###   ########.fr       */
+/*   Updated: 2021/09/27 23:04:43 by fhamel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,9 +59,10 @@ typedef struct s_philo
 }		t_philo;
 
 // action.c
-int	do_eat(t_philo *philo);
-int	do_sleep(t_philo *philo);
-int	do_think(t_philo *philo);
+int		simulate_action(t_philo *philo, int flag, long time);
+int		do_eat(t_philo *philo);
+int		do_sleep(t_philo *philo);
+int		do_think(t_philo *philo);
 
 // error.c
 void	error_args(void);
@@ -70,10 +71,10 @@ int		check_val(char *str);
 int		check_parsing(int ac, char **av);
 
 // fork.c
-int	unlock_first_fork(t_philo *philo);
-int	unlock_second_fork(t_philo *philo);
-int	lock_first_fork(t_philo *philo);
-int	lock_second_fork(t_philo *philo);
+int		unlock_first_fork(t_philo *philo);
+int		unlock_second_fork(t_philo *philo);
+int		lock_first_fork(t_philo *philo);
+int		lock_second_fork(t_philo *philo);
 
 // init.c
 t_philo	*init_philo(int id, t_data *data);
@@ -81,13 +82,17 @@ void	append_philo(t_philo **philo_lst, t_philo *philo);
 void	init_param(t_param *param, int ac, char **av);
 
 // philo.c
+void	*start_philo(void *void_philo);
+void	*start_watch(void *void_lst);
 int		simulation(t_data *data);
-int		philo(int ac, char **av);
 
 // thread.c
+void	free_philo_fork(t_philo *philo_lst);
+t_philo	*create_philos(t_data *data);
 int		create_threads(t_data *data);
 
 // time.c
+int		is_dead(t_philo *philo);
 long	get_ms(struct timeval ref);
 
 // utils.c
