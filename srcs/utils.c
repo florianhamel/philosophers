@@ -6,11 +6,18 @@
 /*   By: fhamel <fhamel@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/22 12:08:46 by fhamel            #+#    #+#             */
-/*   Updated: 2021/09/22 12:30:20 by fhamel           ###   ########.fr       */
+/*   Updated: 2021/09/27 19:56:01 by fhamel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
+
+int	ft_iseven(int nb)
+{
+	if (nb % 2 == 0)
+		return (TRUE);
+	return (FALSE);
+}
 
 int	ft_strlen(char *str)
 {

@@ -6,53 +6,81 @@
 /*   By: fhamel <fhamel@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/24 14:19:00 by fhamel            #+#    #+#             */
-/*   Updated: 2021/09/25 20:22:53 by fhamel           ###   ########.fr       */
+/*   Updated: 2021/09/27 20:38:50 by fhamel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-void	*start_philo(void *void_data)
+void	*start_philo(void *void_philo)
 {
-	t_data	*data;
-	int		id;
+	t_philo	*philo;
 
-	data = (t_data *)void_data;
-	id = data->id;
-	usleep(1 * 1000000);
-	printf("id: %d\n", id);
+	philo = (t_philo *)void_philo;
+	while (TRUE)
+	{
+		if (do_eat(philo) == ERROR)
+			return (NULL);
+		if (do_sleep(philo) == ERROR)
+			return (NULL);
+		if (do_think(philo) == ERROR)
+			return (NULL);
+	}
 	return (NULL);
 }
 
-void	*start_dw(void *void_data)
+void	*start_watch(void *void_lst)
 {
-	t_data	*data;
+	t_philo *current;
 
-	data = (t_data *)void_data;
+	current = (t_philo *)void_lst;
 	while (TRUE)
 	{}
 	return (NULL);
 }
 
-int	create_threads(t_data *data)
+t_philo	*create_philos(t_data *data)
 {
-	pthread_t	thread[data->param->nb_philos];
-	pthread_t	death_watch;
+	pthread_t	thread[data->param.nb_philos];
+	t_philo		*philo_lst;
+	t_philo		*philo;
 	int			i;
 
 	i = 0;
-	while (i < data->param->nb_philos)
+	philo_lst = NULL;
+	while (i < data->param.nb_philos)
 	{
-		data->id = i;
+		philo = init_philo(i + 1, data);
+		if (!philo)
+		{
+			// free shit
+			return (NULL);
+		}
+		append_philo(&philo_lst, philo);
 		if (pthread_create(&thread[i], NULL, start_philo, \
-		(void *)data) == ERROR)
-			return (ERROR);
+		(void *)philo) == ERROR)
+			return (NULL);
 		pthread_detach(thread[i]);
-		usleep(3000);
 		i++;
 	}
-	if (pthread_create(&death_watch, NULL, start_dw, (void *)data) == ERROR)
+	return (philo_lst);
+}
+
+int	create_threads(t_data *data)
+{
+	t_philo		*philo_lst;
+	pthread_t	watch;
+
+	philo_lst = create_philos(data);
+	if (!philo_lst)
+		return (ERROR);
+	if (pthread_create(&watch, NULL, start_watch, \
+	(void *)philo_lst) == ERROR)
 			return (ERROR);
-	pthread_join(death_watch, NULL);
+	if (pthread_join(watch, NULL) == ERROR)
+	{
+		// free shit
+		return (ERROR);
+	}
 	return (SUCCESS);
 }

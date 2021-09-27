@@ -6,7 +6,7 @@
 /*   By: fhamel <fhamel@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/06 03:04:52 by fhamel            #+#    #+#             */
-/*   Updated: 2021/09/25 20:11:42 by fhamel           ###   ########.fr       */
+/*   Updated: 2021/09/27 20:24:20 by fhamel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,44 +19,49 @@
 # include <stdlib.h>
 # include <sys/time.h>
 
-// Bools
 # define ERROR -1
 # define SUCCESS 0
 # define FALSE 0
 # define TRUE 1
 # define DEAD 
-
 # define NO_ARG -1
+
+# define FORK 1
+# define EAT 2
+# define SLEEP 3
+# define THINK 4
+# define DIE 5
 
 typedef struct s_param
 {
 	int	nb_philos;
-	int	time_to_die;
-	int	time_to_eat;
-	int	time_to_sleep;
+	int	tt_die;
+	int	tt_eat;
+	int	tt_sleep;
 	int	max_meals;
 }		t_param;
 
-// typedef struct s_fork
-// {
-// 	pthread_mutex_t	mutex;
-// 	struct s_fork	*prev;
-// 	struct s_fork	*next;
-// }		t_fork;
-
 typedef struct s_data
 {
-	struct s_param	*param;
+	struct s_param	param;
+	struct timeval	start;
 	pthread_mutex_t	*fork;
-	struct timeval	*stv;
-	int				id;
+	pthread_mutex_t	write;
 }		t_data;
 
 typedef struct s_philo
 {
 	int				id;
-	struct timeval	*lt_eat;
+	struct timeval	last_meal;
+	struct s_data	*data;
+	struct s_philo	*prev;
+	struct s_philo	*next;
 }		t_philo;
+
+// action.c
+int	do_eat(t_philo *philo);
+int	do_sleep(t_philo *philo);
+int	do_think(t_philo *philo);
 
 // error.c
 void	error_args(void);
@@ -64,17 +69,29 @@ void	error_val(void);
 int		check_val(char *str);
 int		check_parsing(int ac, char **av);
 
+// fork.c
+int	unlock_first_fork(t_philo *philo);
+int	unlock_second_fork(t_philo *philo);
+int	lock_first_fork(t_philo *philo);
+int	lock_second_fork(t_philo *philo);
+
 // init.c
-t_param	*init_param(int ac, char **av);
+t_philo	*init_philo(int id, t_data *data);
+void	append_philo(t_philo **philo_lst, t_philo *philo);
+void	init_param(t_param *param, int ac, char **av);
 
 // philo.c
-int		simulation(t_param *param);
+int		simulation(t_data *data);
 int		philo(int ac, char **av);
 
 // thread.c
 int		create_threads(t_data *data);
 
+// time.c
+long	get_ms(struct timeval ref);
+
 // utils.c
+int		ft_iseven(int nb);
 int		ft_strlen(char *str);
 int		ft_atoi(const char *str);
 

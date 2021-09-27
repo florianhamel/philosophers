@@ -6,26 +6,51 @@
 /*   By: fhamel <fhamel@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/24 17:55:49 by fhamel            #+#    #+#             */
-/*   Updated: 2021/09/25 20:16:50 by fhamel           ###   ########.fr       */
+/*   Updated: 2021/09/27 20:23:57 by fhamel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-t_param	*init_param(int ac, char **av)
+t_philo	*init_philo(int id, t_data *data)
 {
-	t_param	*param;
+	t_philo	*philo;
 
-	param = malloc(sizeof(t_param));
-	if (!param)
+	philo = malloc(sizeof(t_philo));
+	if (!philo)
 		return (NULL);
+	philo->id = id;
+	philo->last_meal = data->start;
+	philo->data = data;
+	philo->prev = NULL;
+	philo->next = NULL;
+	return (philo);
+}
+
+void	append_philo(t_philo **philo_lst, t_philo *philo)
+{
+	t_philo	*current;
+
+	if (!*philo_lst)
+	{
+		*philo_lst = philo;
+		return ;
+	}
+	current = *philo_lst;
+	while (current->next)
+		current = current->next;
+	philo->prev = current;
+	current->next = philo;
+}
+
+void	init_param(t_param *param, int ac, char **av)
+{
 	param->nb_philos = ft_atoi(av[1]);
-	param->time_to_die = ft_atoi(av[2]);
-	param->time_to_eat = ft_atoi(av[3]);
-	param->time_to_sleep = ft_atoi(av[4]);
+	param->tt_die = ft_atoi(av[2]);
+	param->tt_eat = ft_atoi(av[3]);
+	param->tt_sleep = ft_atoi(av[4]);
 	if (ac == 6)
 		param->max_meals = ft_atoi(av[5]);
 	else
 		param->max_meals = NO_ARG;
-	return (param);
 }

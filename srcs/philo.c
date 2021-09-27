@@ -6,45 +6,29 @@
 /*   By: fhamel <fhamel@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/22 11:54:43 by fhamel            #+#    #+#             */
-/*   Updated: 2021/09/25 20:14:20 by fhamel           ###   ########.fr       */
+/*   Updated: 2021/09/27 17:15:56 by fhamel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-pthread_mutex_t	*init_fork_mutex(t_param *param)
+int	simulation(t_data *data)
 {
-	pthread_mutex_t	*fork;
-	int	i;
+	pthread_mutex_t	fork[data->param.nb_philos];
+	int				i;
 
 	i = 0;
-	fork = malloc(sizeof(pthread_mutex_t) * param->nb_philos);
-	if (!fork)
-		return (NULL);
-	while (i < param->nb_philos)
+	while (i < data->param.nb_philos)
 	{
 		if (pthread_mutex_init(&fork[i], NULL) == ERROR)
-			return (NULL);
+			return (ERROR);
 		i++;
 	}
-	return (fork);
-}
-
-int	simulation(t_param *param)
-{
-	t_data			*data;
-	struct timeval	stv;
-
-	data = malloc(sizeof(t_data));
-	if (!data)
+	data->fork = fork;
+	if (pthread_mutex_init(&data->write,  NULL) == ERROR)
 		return (ERROR);
-	data->param = param;
-	data->fork = init_fork_mutex(param);
-	if (!data->fork)
+	if(gettimeofday(&data->start, NULL) == ERROR)
 		return (ERROR);
-	if(gettimeofday(&stv, NULL) == ERROR)
-		return (ERROR);
-	data->stv = &stv;
 	if (create_threads(data) == ERROR)
 		return (ERROR);
 	return (SUCCESS);
@@ -52,15 +36,12 @@ int	simulation(t_param *param)
 
 int	philo(int ac, char **av)
 {
-	t_param	*param;
+	t_data	data;
 
 	if (check_parsing(ac, av) == ERROR)
 		return (ERROR);
-	param = init_param(ac, av);
-	if (!param)
+	init_param(&data.param, ac, av);
+	if (simulation(&data) == ERROR)
 		return (ERROR);
-	if (simulation(param) == ERROR)
-		return (ERROR);
-	free(param);
 	return (SUCCESS);
 }
