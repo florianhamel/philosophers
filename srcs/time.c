@@ -6,11 +6,29 @@
 /*   By: fhamel <fhamel@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/27 14:57:00 by fhamel            #+#    #+#             */
-/*   Updated: 2021/09/27 23:38:59 by fhamel           ###   ########.fr       */
+/*   Updated: 2021/09/28 01:58:46 by fhamel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
+
+int	ft_usleep(long micros)
+{
+	struct timeval	start;
+	struct timeval	tv;
+	long			time;
+
+	gettimeofday(&start, NULL);
+	time = 0;
+	while (time < micros)
+	{
+		usleep(time / 1000);
+		gettimeofday(&tv, NULL);
+		time = (tv.tv_sec - start.tv_sec) * 1000000;
+		time += (tv.tv_usec - start.tv_usec);
+	}
+	return (SUCCESS);
+}
 
 int	is_dead(t_philo *philo)
 {

@@ -6,7 +6,7 @@
 /*   By: fhamel <fhamel@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/06 03:04:52 by fhamel            #+#    #+#             */
-/*   Updated: 2021/09/27 23:04:43 by fhamel           ###   ########.fr       */
+/*   Updated: 2021/09/28 01:58:11 by fhamel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,6 +92,7 @@ t_philo	*create_philos(t_data *data);
 int		create_threads(t_data *data);
 
 // time.c
+int		ft_usleep(long micros);
 int		is_dead(t_philo *philo);
 long	get_ms(struct timeval ref);
 

@@ -47,11 +47,40 @@ void	*f2(void *arg)
 	return (NULL);
 }
 
+int	ft_usleep(long micros)
+{
+	struct timeval	start;
+	struct timeval	tv;
+	long			time;
+
+	gettimeofday(&start, NULL);
+	time = 0;
+	while (time < micros)
+	{
+		usleep(time / 1000);
+		gettimeofday(&tv, NULL);
+		time = (tv.tv_sec - start.tv_sec) * 1000000;
+		time += (tv.tv_usec - start.tv_usec);
+	}
+	return (0);
+}
+
+long	ft_time()
+{
+	struct timeval	t1;
+	struct timeval	t2;
+	long			time;
+
+	gettimeofday(&t1, NULL);
+	ft_usleep(500);
+	gettimeofday(&t2, NULL);
+	time = (t2.tv_sec - t1.tv_sec) * 1000;
+	time += (t2.tv_usec - t1.tv_usec) / 1000;
+	return (time);
+}
+
 int	main(void)
 {
-	pthread_mutex_t	test;
-
-	int ret = pthread_mutex_destroy(&test);
-	printf("%d\n", ret);
+	printf("%lu\n", ft_time());
 	return (0);
 }
