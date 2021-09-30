@@ -6,7 +6,7 @@
 /*   By: fhamel <fhamel@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/06 03:04:52 by fhamel            #+#    #+#             */
-/*   Updated: 2021/09/28 01:58:11 by fhamel           ###   ########.fr       */
+/*   Updated: 2021/09/30 14:21:31 by fhamel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,9 @@ typedef struct s_data
 typedef struct s_philo
 {
 	int				id;
+	int				nb_meals;
 	struct timeval	last_meal;
+	pthread_mutex_t	death;
 	struct s_data	*data;
 	struct s_philo	*prev;
 	struct s_philo	*next;
@@ -93,12 +95,16 @@ int		create_threads(t_data *data);
 
 // time.c
 int		ft_usleep(long micros);
-int		is_dead(t_philo *philo);
+int		is_dead(t_philo *philo, struct timeval *now);
 long	get_ms(struct timeval ref);
 
 // utils.c
 int		ft_iseven(int nb);
 int		ft_strlen(char *str);
 int		ft_atoi(const char *str);
+
+// watch.c
+int		watch_death(t_philo *philo_lst);
+int		watch_meal(t_philo *philo_lst);
 
 #endif

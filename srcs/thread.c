@@ -6,7 +6,7 @@
 /*   By: fhamel <fhamel@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/24 14:19:00 by fhamel            #+#    #+#             */
-/*   Updated: 2021/09/27 22:48:42 by fhamel           ###   ########.fr       */
+/*   Updated: 2021/09/30 13:02:01 by fhamel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,6 +56,8 @@ t_philo	*create_philos(t_data *data)
 		(void *)philo) == ERROR)
 			return (NULL);
 		pthread_detach(thread[i]);
+		if (ft_usleep(2) == ERROR)
+			return (NULL);
 		i++;
 	}
 	return (philo_lst);

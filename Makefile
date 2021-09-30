@@ -6,7 +6,7 @@
 #    By: fhamel <fhamel@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/04/25 20:20:38 by florianhame       #+#    #+#              #
-#    Updated: 2021/09/27 23:38:31 by fhamel           ###   ########.fr        #
+#    Updated: 2021/09/28 12:16:45 by fhamel           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -31,6 +31,7 @@ _SRC_		=	action.c \
 				thread.c \
 				time.c \
 				utils.c \
+				watch.c \
 
 SRCS		=	$(addprefix $(D_SRCS), $(_SRC_))
 

@@ -6,7 +6,7 @@
 /*   By: fhamel <fhamel@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/24 17:55:49 by fhamel            #+#    #+#             */
-/*   Updated: 2021/09/27 20:23:57 by fhamel           ###   ########.fr       */
+/*   Updated: 2021/09/30 16:20:49 by fhamel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,10 @@ t_philo	*init_philo(int id, t_data *data)
 	philo = malloc(sizeof(t_philo));
 	if (!philo)
 		return (NULL);
+	if (pthread_mutex_init(&philo->death, NULL) == ERROR)
+		return (NULL);
 	philo->id = id;
+	philo->nb_meals = 0;
 	philo->last_meal = data->start;
 	philo->data = data;
 	philo->prev = NULL;

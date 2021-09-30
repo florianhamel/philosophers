@@ -6,7 +6,7 @@
 /*   By: fhamel <fhamel@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/22 11:54:43 by fhamel            #+#    #+#             */
-/*   Updated: 2021/09/28 01:59:23 by fhamel           ###   ########.fr       */
+/*   Updated: 2021/09/30 16:10:58 by fhamel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,27 +32,15 @@ void	*start_philo(void *void_philo)
 void	*start_watch(void *void_lst)
 {
 	t_philo			*philo_lst;
-	t_philo 		*current;
-	int				boolean;
 
 	philo_lst = (t_philo *)void_lst;
 	while (TRUE)
 	{
-		current = philo_lst;
-		while (current)
-		{
-			boolean = is_dead(current);
-			if (boolean != FALSE)
-			{
-				if (boolean == TRUE)
-					simulate_action(current, DIE, NO_ARG);
-				free_philo_fork(philo_lst);
-				return (NULL);
-			}
-			current = current->next;
-		}
+		if (watch_death(philo_lst) != FALSE)
+			return (NULL);
+		if (watch_meal(philo_lst) == TRUE)
+			return (NULL);
 	}
-	return (NULL);
 }
 
 int	simulation(t_data *data)
@@ -68,9 +56,9 @@ int	simulation(t_data *data)
 		i++;
 	}
 	data->fork = fork;
-	if (pthread_mutex_init(&data->write,  NULL) == ERROR)
+	if (gettimeofday(&data->start, NULL) == ERROR)
 		return (ERROR);
-	if(gettimeofday(&data->start, NULL) == ERROR)
+	if (pthread_mutex_init(&data->write,  NULL) == ERROR)
 		return (ERROR);
 	if (create_threads(data) == ERROR)
 		return (ERROR);
