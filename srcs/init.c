@@ -6,7 +6,7 @@
 /*   By: fhamel <fhamel@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/24 17:55:49 by fhamel            #+#    #+#             */
-/*   Updated: 2021/09/30 16:20:49 by fhamel           ###   ########.fr       */
+/*   Updated: 2021/10/04 11:50:19 by fhamel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ t_philo	*init_philo(int id, t_data *data)
 	philo = malloc(sizeof(t_philo));
 	if (!philo)
 		return (NULL);
-	if (pthread_mutex_init(&philo->death, NULL) == ERROR)
+	if (pthread_mutex_init(&philo->time, NULL) == ERROR)
 		return (NULL);
 	philo->id = id;
 	philo->nb_meals = 0;
@@ -44,6 +44,27 @@ void	append_philo(t_philo **philo_lst, t_philo *philo)
 		current = current->next;
 	philo->prev = current;
 	current->next = philo;
+}
+
+int	init_mutex(t_data *data)
+{
+	int	i;
+
+	i = 0;
+	data->fork = malloc(sizeof(pthread_mutex_t) * data->param.nb_philos);
+	if (!data->fork)
+		return (ERROR);
+	while (i < data->param.nb_philos)
+	{
+		if (pthread_mutex_init(&data->fork[i], NULL) == ERROR)
+			return (ERROR);
+		i++;
+	}
+	if (pthread_mutex_init(&data->write, NULL) == ERROR)
+		return (ERROR);
+	if (pthread_mutex_init(&data->death, NULL) == ERROR)
+		return (ERROR);
+	return (SUCCESS);
 }
 
 void	init_param(t_param *param, int ac, char **av)

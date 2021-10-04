@@ -6,7 +6,7 @@
 /*   By: fhamel <fhamel@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/22 12:08:46 by fhamel            #+#    #+#             */
-/*   Updated: 2021/09/27 22:24:55 by fhamel           ###   ########.fr       */
+/*   Updated: 2021/10/01 22:55:25 by fhamel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ int	ft_strlen(char *str)
 
 	len = 0;
 	if (!str)
-		return(len);
+		return (len);
 	while (str[len])
 		len++;
 	return (len);

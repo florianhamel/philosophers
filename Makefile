@@ -6,7 +6,7 @@
 #    By: fhamel <fhamel@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/04/25 20:20:38 by florianhame       #+#    #+#              #
-#    Updated: 2021/09/28 12:16:45 by fhamel           ###   ########.fr        #
+#    Updated: 2021/10/04 12:35:32 by fhamel           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -27,11 +27,11 @@ _SRC_		=	action.c \
 				fork.c \
 				init.c \
 				main.c \
+				nurse.c \
 				philo.c \
 				thread.c \
 				time.c \
 				utils.c \
-				watch.c \
 
 SRCS		=	$(addprefix $(D_SRCS), $(_SRC_))
 
@@ -42,6 +42,8 @@ OBJS		=	$(addprefix $(D_OBJS), $(_SRC_:.c=.o))
 ################################################################################
 
 CC			=	clang
+
+THREAD		=	-pthread		
 
 FLAGS		=	-Wall -Wextra -Werror
 
@@ -75,7 +77,7 @@ $(D_OBJS)%.o : $(D_SRCS)%.c
 
 $(NAME) : compiling_start_m $(OBJS) compiling_end_m
 	@python -c 'print u"\033[0;33m\u2192 " + "Linking objects for \033[0;34m$(NAME)\033[0;33m... \033[0m"'
-	@$(CC) $(OBJS) -o $(NAME)
+	@$(CC) $(THREAD) $(OBJS) -o $(NAME)
 	@python -c 'print u"\033[0;32mLinking successful \u2713 \033[0m"'
 
 clean :

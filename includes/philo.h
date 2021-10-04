@@ -6,7 +6,7 @@
 /*   By: fhamel <fhamel@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/06 03:04:52 by fhamel            #+#    #+#             */
-/*   Updated: 2021/09/30 14:21:31 by fhamel           ###   ########.fr       */
+/*   Updated: 2021/10/04 14:28:10 by fhamel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,8 +43,10 @@ typedef struct s_param
 
 typedef struct s_data
 {
+	int				sb_died;
 	struct s_param	param;
 	struct timeval	start;
+	pthread_mutex_t	death;
 	pthread_mutex_t	*fork;
 	pthread_mutex_t	write;
 }		t_data;
@@ -54,7 +56,7 @@ typedef struct s_philo
 	int				id;
 	int				nb_meals;
 	struct timeval	last_meal;
-	pthread_mutex_t	death;
+	pthread_mutex_t	time;
 	struct s_data	*data;
 	struct s_philo	*prev;
 	struct s_philo	*next;
@@ -62,6 +64,7 @@ typedef struct s_philo
 
 // action.c
 int		simulate_action(t_philo *philo, int flag, long time);
+void	do_die(t_philo *philo);
 int		do_eat(t_philo *philo);
 int		do_sleep(t_philo *philo);
 int		do_think(t_philo *philo);
@@ -81,16 +84,21 @@ int		lock_second_fork(t_philo *philo);
 // init.c
 t_philo	*init_philo(int id, t_data *data);
 void	append_philo(t_philo **philo_lst, t_philo *philo);
+int		init_mutex(t_data *data);
 void	init_param(t_param *param, int ac, char **av);
+
+// watch.c
+int		check_death(t_philo *philo_lst);
+int		check_meal(t_philo *philo_lst);
 
 // philo.c
 void	*start_philo(void *void_philo);
-void	*start_watch(void *void_lst);
+void	*start_nurse(void *void_lst);
 int		simulation(t_data *data);
 
 // thread.c
 void	free_philo_fork(t_philo *philo_lst);
-t_philo	*create_philos(t_data *data);
+t_philo	*create_philos(t_data *data, pthread_t *philo_thread);
 int		create_threads(t_data *data);
 
 // time.c
@@ -102,9 +110,5 @@ long	get_ms(struct timeval ref);
 int		ft_iseven(int nb);
 int		ft_strlen(char *str);
 int		ft_atoi(const char *str);
-
-// watch.c
-int		watch_death(t_philo *philo_lst);
-int		watch_meal(t_philo *philo_lst);
 
 #endif

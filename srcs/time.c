@@ -6,7 +6,7 @@
 /*   By: fhamel <fhamel@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/27 14:57:00 by fhamel            #+#    #+#             */
-/*   Updated: 2021/09/30 16:32:07 by fhamel           ###   ########.fr       */
+/*   Updated: 2021/10/04 16:54:03 by fhamel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,12 +18,15 @@ int	ft_usleep(long micros)
 	struct timeval	tv;
 	long			time;
 
-	gettimeofday(&start, NULL);
+	if (gettimeofday(&start, NULL) == ERROR)
+		return (ERROR);
 	time = 0;
 	while (time < micros)
 	{
-		usleep(time / 1000);
-		gettimeofday(&tv, NULL);
+		if (usleep(micros / 1000) == ERROR)
+			return (ERROR);
+		if (gettimeofday(&tv, NULL) == ERROR)
+			return (ERROR);
 		time = (tv.tv_sec - start.tv_sec) * 1000000;
 		time += (tv.tv_usec - start.tv_usec);
 	}
@@ -32,7 +35,7 @@ int	ft_usleep(long micros)
 
 int	is_dead(t_philo *philo, struct timeval *now)
 {
-	long time;
+	long	time;
 
 	if (now->tv_sec == philo->last_meal.tv_sec && \
 	now->tv_usec == philo->last_meal.tv_usec)

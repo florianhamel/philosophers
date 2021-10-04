@@ -6,7 +6,7 @@
 /*   By: fhamel <fhamel@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/27 19:52:31 by fhamel            #+#    #+#             */
-/*   Updated: 2021/09/27 20:34:10 by fhamel           ###   ########.fr       */
+/*   Updated: 2021/10/04 10:55:47 by fhamel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ int	unlock_first_fork(t_philo *philo)
 			return (ERROR);
 	}
 	else if (pthread_mutex_unlock(&philo->data->fork[right]) == ERROR)
-			return (ERROR);
+		return (ERROR);
 	return (SUCCESS);
 }
 
@@ -48,7 +48,7 @@ int	unlock_second_fork(t_philo *philo)
 			return (ERROR);
 	}
 	else if (pthread_mutex_unlock(&philo->data->fork[left]) == ERROR)
-			return (ERROR);
+		return (ERROR);
 	return (SUCCESS);
 }
 
@@ -68,7 +68,7 @@ int	lock_first_fork(t_philo *philo)
 			return (ERROR);
 	}
 	else if (pthread_mutex_lock(&philo->data->fork[right]) == ERROR)
-			return (ERROR);
+		return (ERROR);
 	return (SUCCESS);
 }
 
@@ -88,6 +88,6 @@ int	lock_second_fork(t_philo *philo)
 			return (ERROR);
 	}
 	else if (pthread_mutex_lock(&philo->data->fork[left]) == ERROR)
-			return (ERROR);
+		return (ERROR);
 	return (SUCCESS);
 }

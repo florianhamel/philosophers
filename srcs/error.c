@@ -6,7 +6,7 @@
 /*   By: fhamel <fhamel@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/22 11:53:16 by fhamel            #+#    #+#             */
-/*   Updated: 2021/09/30 16:40:13 by fhamel           ###   ########.fr       */
+/*   Updated: 2021/10/04 16:58:46 by fhamel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ void	error_val(void)
 {
 	char	*str;
 
-	str = "philo: arguments must be in the range [0, 10000]";
+	str = "philo: arguments must be in the range [0, 1,000,000]";
 	write(STDERR_FILENO, str, ft_strlen(str));
 }
 
@@ -34,15 +34,15 @@ int	check_val(char *str)
 	int	i;
 
 	i = 0;
-	if (ft_strlen(str) > 5)
+	if (ft_strlen(str) > 7)
 		return (ERROR);
 	while (str[i])
 	{
 		if (str[i] < '0' || '9' < str[i])
-			return (0);
+			return (ERROR);
 		i++;
 	}
-	if (10000 < ft_atoi(str))
+	if (1000000 < ft_atoi(str))
 		return (ERROR);
 	return (SUCCESS);
 }

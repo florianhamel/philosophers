@@ -6,7 +6,7 @@
 /*   By: fhamel <fhamel@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/22 11:54:43 by fhamel            #+#    #+#             */
-/*   Updated: 2021/09/30 16:10:58 by fhamel           ###   ########.fr       */
+/*   Updated: 2021/10/04 16:53:26 by fhamel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,51 +17,49 @@ void	*start_philo(void *void_philo)
 	t_philo	*philo;
 
 	philo = (t_philo *)void_philo;
-	while (TRUE)
+	while (philo->data->sb_died == FALSE)
 	{
-		if (do_eat(philo) == ERROR)
-			return (NULL);
-		if (do_sleep(philo) == ERROR)
-			return (NULL);
-		if (do_think(philo) == ERROR)
-			return (NULL);
+		if (!philo->data->sb_died && do_eat(philo) == ERROR)
+			break ;
+		if (!philo->data->sb_died && do_sleep(philo) == ERROR)
+			break ;
+		if (!philo->data->sb_died && do_think(philo) == ERROR)
+			break ;
 	}
+	pthread_mutex_destroy(&philo->time);
+	free(philo);
 	return (NULL);
 }
 
-void	*start_watch(void *void_lst)
+void	*start_nurse(void *void_lst)
 {
 	t_philo			*philo_lst;
 
 	philo_lst = (t_philo *)void_lst;
 	while (TRUE)
 	{
-		if (watch_death(philo_lst) != FALSE)
-			return (NULL);
-		if (watch_meal(philo_lst) == TRUE)
-			return (NULL);
+		if (check_death(philo_lst) != FALSE)
+			break ;
+		if (check_meal(philo_lst) == TRUE)
+			break ;
 	}
+	ft_usleep(250 * 1000);
+	return (NULL);
 }
 
 int	simulation(t_data *data)
 {
-	pthread_mutex_t	fork[data->param.nb_philos];
-	int				i;
-
-	i = 0;
-	while (i < data->param.nb_philos)
-	{
-		if (pthread_mutex_init(&fork[i], NULL) == ERROR)
-			return (ERROR);
-		i++;
-	}
-	data->fork = fork;
+	data->sb_died = FALSE;
 	if (gettimeofday(&data->start, NULL) == ERROR)
 		return (ERROR);
-	if (pthread_mutex_init(&data->write,  NULL) == ERROR)
+	if (init_mutex(data) == ERROR)
 		return (ERROR);
 	if (create_threads(data) == ERROR)
 		return (ERROR);
+	data->sb_died = TRUE;
+	free(data->fork);
+	pthread_mutex_destroy(&data->write);
+	pthread_mutex_destroy(&data->death);
 	return (SUCCESS);
 }
 
